@@ -1,0 +1,11 @@
+{
+  "name": "css-find",
+  "version": "0.0.0",
+  "description": "",
+  "license": "Apache",
+  "author": "",
+  "repository": "",
+  "dependencies": {
+    "grunt-bump": "0.0.11"
+  }
+}
