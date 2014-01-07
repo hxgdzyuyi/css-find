@@ -32,6 +32,6 @@ if (!results) { return }
 results.forEach(function(result) {
   console.log(clc.green(prop + ':' + result.value))
   result.selectors.forEach(function(selector, index) {
-    console.log(' ' +(index + 1) + ') ' + selector)
+    console.log(' ' +(index + 1) + ') ' + selector.replace('\n', ' '))
   })
 })
