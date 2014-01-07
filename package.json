@@ -5,12 +5,19 @@
   "license": "Apache",
   "author": "",
   "repository": "",
+  "bin": {
+    "css-find": "./bin/css-find.js"
+  },
   "dependencies": {
     "grunt-bump": "0.0.11"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-mocha-cli": "~1.5.0",
-    "should": "~2.1.1"
+    "should": "~2.1.1",
+    "cssom": "~0.3.0",
+    "cli-color": "~0.2.3",
+    "underscore": "~1.5.2",
+    "linq": "~1.0.2"
   }
 }
