@@ -76,12 +76,23 @@ if (url) {
       return $(this).attr('href')
     }).toArray()
 
+    console.log(clc.green('Searching in...'))
+    console.log(stylesheets)
+
     if (!stylesheets.length) { return }
 
     var stylesheetDfds = []
+      , rStartWithSlash = /^(\/*)/
+      , rEndWithSlash = /\/$/
 
     stylesheets.forEach(function(stylesheet) {
       var deferred = Q.defer()
+        , isRelativeUrl = !/^http/.test(stylesheet)
+
+      if (isRelativeUrl) {
+        stylesheet = [url.replace(rEndWithSlash, '')
+          , stylesheet.replace(rStartWithSlash, '')].join('/')
+      }
 
       req.get(stylesheet, function(error, response, body) {
         if (error || response.statusCode !== 200) {
