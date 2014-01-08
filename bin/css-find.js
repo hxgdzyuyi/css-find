@@ -2,9 +2,11 @@
 
 var usage = [
    ''
-  , '  Usage: css-find [options] [file path] [css prop]'
+  , '  Usage: css-find [options] [file path | url] [css prop]'
   , ''
-  , '  Example: css-find  ./index.css z-index'
+  , '  Example: '
+  , '    css-find  ./index.css z-index'
+  , '    css-find  http://www.douban.com z-index'
   , ''
   , '  Options:'
   , ''
