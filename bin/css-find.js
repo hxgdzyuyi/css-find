@@ -8,13 +8,31 @@ var finder = require('../lib/css-find')
   , files = []
   , valuesWithMatches
 
+var usage = [
+   ''
+  , '  Usage: css-find [options] [file path] [css prop]'
+  , ''
+  , '  Example: css-find  ./index.css z-index'
+  , ''
+  , '  Options:'
+  , ''
+  , '    -l, --values-with-matches  Only print values that don\'t contain selectors'
+  , '    -h, --help, help           Help'
+  , ''
+].join('\n');
+
+if (!args.length) {
+  args.push('help')
+}
+
 while (args.length) {
   arg = args.shift()
   switch(arg) {
-    case '-f':
-    case '--css-file':
-      files.push(args.shift())
-      break;
+    case '-h':
+    case '--help':
+    case 'help':
+      console.error(usage);
+      process.exit(1);
 
     case '-l':
     case '--values-with-matches':
