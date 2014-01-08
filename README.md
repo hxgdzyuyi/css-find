@@ -1,6 +1,10 @@
 css-find
 ---
 
+用来查询 css 文件中相同属性值的选择器
+
+![2014-01-08 11 14 28](https://f.cloud.github.com/assets/163671/1869212/ba7185d8-7877-11e3-95d1-977148f8509a.png)
+
 ## Install
 
 ```javascript
