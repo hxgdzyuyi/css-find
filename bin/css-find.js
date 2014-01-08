@@ -14,7 +14,12 @@ while (args.length) {
     case '--css-file':
       files.push(args.shift())
       break;
+
     default:
+      if (!files.length) {
+        files.push(arg)
+        break;
+      }
       prop = arg
   }
 }
