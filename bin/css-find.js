@@ -67,7 +67,10 @@ var Q = require("q")
 if (url) {
 
   req.get(url, function(error, response, body) {
-    if (error || response.statusCode !== 200) { return }
+    if (error || response.statusCode !== 200) {
+      console.log(error || 'statusCode: ' + response.statusCode)
+      return
+    }
 
     var cheerio = require('cheerio')
       , $ = cheerio.load(body)
@@ -98,6 +101,7 @@ if (url) {
 
       req.get(stylesheet, function(error, response, body) {
         if (error || response.statusCode !== 200) {
+          console.log(error || 'statusCode: ' + response.statusCode)
           return deferred.resolve('')
         }
         deferred.resolve(body)
