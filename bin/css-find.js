@@ -6,6 +6,7 @@ var finder = require('../lib/css-find')
   , clc = require('cli-color')
   , prop
   , files = []
+  , valuesWithMatches
 
 while (args.length) {
   arg = args.shift()
@@ -13,6 +14,11 @@ while (args.length) {
     case '-f':
     case '--css-file':
       files.push(args.shift())
+      break;
+
+    case '-l':
+    case '--values-with-matches':
+      valuesWithMatches = true
       break;
 
     default:
@@ -36,6 +42,7 @@ if (!results) { return }
 
 results.forEach(function(result) {
   console.log(clc.green(prop + ':' + result.value))
+  if (valuesWithMatches) { return }
   result.selectors.forEach(function(selector, index) {
     console.log(' ' +(index + 1) + ') ' + selector.replace('\n', ' '))
   })
