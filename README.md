@@ -24,7 +24,7 @@ Usage:
 TODO
 ---
 
-1. url 抓取网页的时候识别 <style> 标签内的样式 (Example: baidu.com)
+1. url 抓取网页的时候识别 `<style>` 标签内的样式 (Example: baidu.com)
 
 License
 ---
