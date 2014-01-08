@@ -1,13 +1,5 @@
 #!/usr/bin/env node
 
-var finder = require('../lib/css-find')
-  , args = process.argv.slice(2)
-  , fs = require('fs')
-  , clc = require('cli-color')
-  , prop
-  , files = []
-  , valuesWithMatches
-
 var usage = [
    ''
   , '  Usage: css-find [options] [file path] [css prop]'
@@ -21,9 +13,23 @@ var usage = [
   , ''
 ].join('\n');
 
+var finder = require('../lib/css-find')
+  , args = process.argv.slice(2)
+  , fs = require('fs')
+  , clc = require('cli-color')
+  , prop
+  , files = []
+  , url = ''
+  , valuesWithMatches
+
+var req = require('request')
+
+
 if (!args.length) {
   args.push('help')
 }
+
+var rUrl = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
 
 while (args.length) {
   arg = args.shift()
@@ -40,28 +46,81 @@ while (args.length) {
       break;
 
     default:
-      if (!files.length) {
-        files.push(arg)
+      if (files.length || url) {
+        prop = arg
         break;
       }
-      prop = arg
+
+      if (rUrl.test(arg)) {
+        url = arg
+      } else {
+        files.push(arg)
+      }
   }
 }
 
-var str = ''
+var Q = require("q")
+  , stringDfd = Q.defer()
 
-files.forEach(function(filePath) {
-  str += fs.readFileSync(filePath, 'utf-8')
-})
+if (url) {
 
-var results = finder.search(str, prop)
+  req.get(url, function(error, response, body) {
+    if (error || response.statusCode !== 200) { return }
 
-if (!results) { return }
+    var cheerio = require('cheerio')
+      , $ = cheerio.load(body)
 
-results.forEach(function(result) {
-  console.log(clc.green(prop + ':' + result.value))
-  if (valuesWithMatches) { return }
-  result.selectors.forEach(function(selector, index) {
-    console.log(' ' +(index + 1) + ') ' + selector.replace('\n', ' '))
+    var stylesheets = $('link').filter(function() {
+      return $(this).is('link[rel="stylesheet"]')
+    }).map(function() {
+      return $(this).attr('href')
+    }).toArray()
+
+    if (!stylesheets.length) { return }
+
+    var stylesheetDfds = []
+
+    stylesheets.forEach(function(stylesheet) {
+      var deferred = Q.defer()
+
+      req.get(stylesheet, function(error, response, body) {
+        if (error || response.statusCode !== 200) {
+          return deferred.resolve('')
+        }
+        deferred.resolve(body)
+      })
+
+      stylesheetDfds.push(deferred.promise)
+    })
+
+    var slice = Array.prototype.slice
+    Q.all(stylesheetDfds).done(function() {
+      var string = slice.call(arguments).join('\n')
+      stringDfd.resolve(string)
+    })
+  })
+
+} else {
+  var str = ''
+
+  files.forEach(function(filePath) {
+    str += fs.readFileSync(filePath, 'utf-8')
+  })
+
+  stringDfd.resolve(str)
+}
+
+
+stringDfd.promise.done(function(string) {
+  var results = finder.search(string, prop)
+
+  if (!results) { return }
+
+  results.forEach(function(result) {
+    console.log(clc.green(prop + ':' + result.value))
+    if (valuesWithMatches) { return }
+    result.selectors.forEach(function(selector, index) {
+      console.log(' ' +(index + 1) + ') ' + selector.replace('\n', ' '))
+    })
   })
 })
