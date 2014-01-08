@@ -1,6 +1,13 @@
 css-find
-===========
+---
 
+## Install
+
+```javascript
+  npm install css-find -g
+```
+
+```
 Usage:
 
   Usage: css-find [options] [file path | url] [css prop]
@@ -12,12 +19,14 @@ Usage:
   Options:
 
     -l, --values-with-matches <path>   Only print values that don't contain selectors
+```
 
 TODO
-==========
+---
+
 1. url 抓取网页的时候识别 <style> 标签内的样式 (Example: baidu.com)
 
 License
-=======
+---
 
 Apache
