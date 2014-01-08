@@ -1,0 +1,14 @@
+.z-index12 {
+  color: red;
+  z-index: 12;
+}
+.red .z-index12,
+.wrapper {
+  z-index: 13;
+  font-size: 13px;
+}
+.z-index13 {
+  z-index: 13;
+  color: red;
+  font-size: 12px;
+}
