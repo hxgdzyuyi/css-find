@@ -14,7 +14,8 @@
     "underscore": "~1.5.2",
     "linq": "~1.0.2",
     "request": "~2.31.0",
-    "q": "~1.0.0"
+    "q": "~1.0.0",
+    "cheerio": "~0.13.1"
   },
   "devDependencies": {
     "should": "~2.1.1",
